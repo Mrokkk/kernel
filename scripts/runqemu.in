@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+RED="\e[31m"
+YELLOW="\e[4;33m"
+RESET="\e[0m"
+
+$(which qemu-system-i386 || which qemu-system-x86_64) -cdrom @CMAKE_BINARY_DIR@/@PROJECT_NAME@.iso -serial stdio -no-reboot -cpu core2duo -display none $@ | while read line; do
+    if [[ "${line}" == *"ERR"* ]]; then
+        echo -e "${RED}${line}${RESET}"
+    elif [[ "${line}" == *"WRN"* ]]; then
+        echo -e "${YELLOW}${line}${RESET}"
+    else
+        echo "$line"
+    fi
+done
+

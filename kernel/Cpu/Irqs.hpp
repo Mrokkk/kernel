@@ -1,0 +1,33 @@
+#ifndef ISR
+#define ISR(x)
+#endif
+
+#ifndef PIC_ISR
+#define PIC_ISR(x)
+#endif
+
+#ifndef TIMER_ISR
+#define TIMER_ISR(x)
+#endif
+
+#ifndef SYSCALL_ISR
+#define SYSCALL_ISR(x)
+#endif
+
+TIMER_ISR(32)
+PIC_ISR(33)
+PIC_ISR(34)
+PIC_ISR(35)
+PIC_ISR(36)
+PIC_ISR(37)
+PIC_ISR(38)
+PIC_ISR(39)
+PIC_ISR(40)
+PIC_ISR(41)
+PIC_ISR(42)
+PIC_ISR(43)
+PIC_ISR(44)
+PIC_ISR(45)
+PIC_ISR(46)
+PIC_ISR(47)
+SYSCALL_ISR(128)

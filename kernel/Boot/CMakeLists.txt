@@ -1,0 +1,6 @@
+if (MULTIBOOT2)
+    set(DETAIL_SRC detail/Multiboot2.cpp)
+else()
+    set(DETAIL_SRC detail/Multiboot1.cpp)
+endif()
+add_library(boot OBJECT Boot.cpp ${DETAIL_SRC} detail/Common.cpp)
