@@ -28,7 +28,9 @@ void VirtualMemoryManager::unmap(
 {
     const auto tableIndex = reinterpret_cast<uint32_t>(address) >> 22;
     const auto pageIndex = (reinterpret_cast<uint32_t>(address) >> 12) & 0x03FF;
+
     auto pageTable = phys2virt(static_cast<uint32_t>(pageDir[tableIndex].address) << 12);
+
     clearPage(reinterpret_cast<PageTableEntry*>(pageTable), pageIndex);
     invlpg(address);
 }

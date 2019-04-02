@@ -3,7 +3,6 @@
 #include "kernel/Logger/Logger.hpp"
 
 #include "Io.hpp"
-#include "Pic.hpp"
 
 namespace cpu
 {

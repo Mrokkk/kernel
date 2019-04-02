@@ -32,7 +32,7 @@ void initialize()
 
     for (auto i = 0u; i < boot::bootData.memoryMapSize; ++i)
     {
-        logger << info << "[" << (int)i << "] = " << memoryMap[i];
+        logger << info << "[" << static_cast<int>(i) << "] = " << memoryMap[i];
     }
 }
 
@@ -40,14 +40,10 @@ LineWrapper& operator<<(LineWrapper& stream, MemoryMap::Type type)
 {
     switch (type)
     {
-        case MemoryMap::Type::Available:
-            return stream << "Available";
-        case MemoryMap::Type::Device:
-            return stream << "Device";
-        case MemoryMap::Type::Unavailable:
-            return stream << "Unavailable";
-        default:
-            return stream << "Unknown";
+        case MemoryMap::Type::Available: return stream << "Available";
+        case MemoryMap::Type::Device: return stream << "Device";
+        case MemoryMap::Type::Unavailable: return stream << "Unavailable";
+        default: return stream << "Unknown";
     }
     return stream;
 }

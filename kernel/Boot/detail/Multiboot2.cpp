@@ -10,20 +10,15 @@ namespace detail
 {
 
 SECTION(.boot)
-enum memory::MemoryMap::Type convert_memory_type(const uint32_t type)
+memory::MemoryMap::Type convert_memory_type(const uint32_t type)
 {
     switch (type)
     {
-        case 1:
-            return memory::MemoryMap::Type::Available;
-        case 2:
-            return memory::MemoryMap::Type::Unavailable;
-        case 3:
-            return memory::MemoryMap::Type::Device;
-        case 4:
-            return memory::MemoryMap::Type::Device;
-        default:
-            return memory::MemoryMap::Type::Unknown;
+        case 1: return memory::MemoryMap::Type::Available;
+        case 2: return memory::MemoryMap::Type::Unavailable;
+        case 3: return memory::MemoryMap::Type::Device;
+        case 4: return memory::MemoryMap::Type::Device;
+        default: return memory::MemoryMap::Type::Unknown;
     }
 }
 
@@ -94,8 +89,7 @@ void readBootloaderData(void* tag)
                 bootData->apmTableAddress = reinterpret_cast<uint32_t>(temp) + sizeof(uint32_t);
                 break;
             }
-            default:
-                break;
+            default: break;
         }
     }
 }

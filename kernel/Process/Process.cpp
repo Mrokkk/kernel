@@ -37,9 +37,7 @@ Process::Process(
 {
 }
 
-Process::~Process()
-{
-}
+Process::~Process() = default;
 
 LineWrapper& operator<<(LineWrapper& stream, const Process& process)
 {

@@ -6,7 +6,6 @@
 
 #include "Cpu/Gdt.hpp"
 #include "Cpu/Idt.hpp"
-#include "Cpu/Pic.hpp"
 #include "Cpu/Pit.hpp"
 #include "Cpu/Reboot.hpp"
 #include "Cpu/Syscall.hpp"
@@ -82,7 +81,6 @@ NORETURN void Kernel::run()
     cpu::idt::initialize();
     memory::initialize();
 
-    cpu::pic::initialize();
     cpu::pit::initialize();
     syscall::initialize();
 

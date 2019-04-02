@@ -73,12 +73,12 @@ void Scheduler::schedule()
 }
 
 uint32_t copyStack(
-    uint32_t destination,
-    uint32_t source,
-    uint32_t size)
+    const uint32_t destination,
+    const uint32_t source,
+    const uint32_t size)
 {
-    auto destinationBegin = reinterpret_cast<char*>(destination - size);
-    auto sourceBegin = reinterpret_cast<char*>(source - size);
+    const auto destinationBegin = reinterpret_cast<char*>(destination - size);
+    const auto sourceBegin = reinterpret_cast<char*>(source - size);
 
     yacppl::memcopy(sourceBegin, destinationBegin, size);
 
@@ -87,7 +87,7 @@ uint32_t copyStack(
 
 Process::Pid Scheduler::createKernelProcess(const cpu::StackFrame& frame)
 {
-    auto _ = cpu::IrqLock::make();
+    auto lock = cpu::IrqLock::make();
 
     auto& currentProcess = getCurrentProcess();
 
@@ -95,7 +95,7 @@ Process::Pid Scheduler::createKernelProcess(const cpu::StackFrame& frame)
         currentProcess,
         nextPid_++,
         Process::Type::Kernel,
-        4096u);
+        PAGE_SIZE);
 
     logger_ << info << __func__ << ": created " << *newProcess;
 
@@ -119,7 +119,7 @@ Process::Pid Scheduler::createKernelProcess(const cpu::StackFrame& frame)
 
 Process::Pid Scheduler::createUserProcess(const cpu::StackFrame& frame)
 {
-    auto _ = cpu::IrqLock::make();
+    auto lock = cpu::IrqLock::make();
 
     auto& currentProcess = getCurrentProcess();
 
@@ -156,7 +156,7 @@ Process& Scheduler::getCurrentProcess()
 
 void NORETURN Scheduler::exit(const int exitCode)
 {
-    auto _ = cpu::IrqLock::make();
+    auto lock = cpu::IrqLock::make();
 
     currentProcess_->exitCode = exitCode;
     currentProcess_->state = Process::State::Zombie;

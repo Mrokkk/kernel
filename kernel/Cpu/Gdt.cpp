@@ -62,7 +62,7 @@ constexpr GdtEntry::GdtEntry(
 {
 }
 
-GdtEntry gdt_entries[] =
+GdtEntry gdtEntries[] =
 {
     // Null segment
     GdtEntry(0, 0, 0),
@@ -83,7 +83,7 @@ GdtEntry gdt_entries[] =
     GdtEntry(flags::Type::Tss32, 0, sizeof(Tss) - sizeof(Tss::ioBitmap))
 };
 
-GdtRegister gdt{sizeof(gdt_entries) - 1, gdt_entries};
+GdtRegister gdt{sizeof(gdtEntries) - 1, gdtEntries};
 
 void GdtRegister::load() const
 {
@@ -109,8 +109,8 @@ void initialize()
 
 void setTss(Tss& t)
 {
-    gdt_entries[5].base(reinterpret_cast<uint32_t>(&t));
-    gdt_entries[5].access &= 0xf9; // Clear busy bit
+    gdtEntries[5].base(reinterpret_cast<uint32_t>(&t));
+    gdtEntries[5].access &= 0xf9; // Clear busy bit
     t.load();
 }
 

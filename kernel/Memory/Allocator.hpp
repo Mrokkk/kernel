@@ -81,8 +81,9 @@ public:
 
     void* allocate(size_t size)
     {
+        auto lock = yacppl::make_scoped_lock(spinlock_);
+
         adaptSize(size);
-        auto _ = yacppl::make_scoped_lock(spinlock_);
         for (auto& temp : blocks_)
         {
             if (temp.free and temp.size >= size)
@@ -91,15 +92,21 @@ public:
                 return temp.data();
             }
         }
-        auto newBlock = create_memory_block(size);
-        if (newBlock == nullptr) return nullptr;
+
+        auto newBlock = createMemoryBlock(size);
+        if (not newBlock)
+        {
+            return nullptr;
+        }
+
         blocks_.push_back(*newBlock);
         return newBlock->data();
     }
 
     bool free(void* address)
     {
-        auto _ = yacppl::make_scoped_lock(spinlock_);
+        auto lock = yacppl::make_scoped_lock(spinlock_);
+
         for (auto& temp : blocks_)
         {
             if (temp.data() == address)
@@ -107,8 +114,12 @@ public:
                 temp.free = true;
                 return true;
             }
+
             auto next = temp.list_.next()->entry();
-            if (not next) break;
+            if (not next)
+            {
+                break;
+            }
             //if (next->free && temp.free)
             //{
                 //temp.size = temp.size + next->size + MemoryBlockSize;
@@ -133,7 +144,7 @@ private:
         end_ = heap_ + PAGE_SIZE;
     }
 
-    MemoryBlock* create_memory_block(size_t size)
+    MemoryBlock* createMemoryBlock(size_t size)
     {
         if (heap_ + MemoryBlockSize + size >= end_)
         {
